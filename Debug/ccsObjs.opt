@@ -1,0 +1,1 @@
+"./MyWaveFile.obj" "./main.obj" "./tm4c123gh6pm_startup_ccs.obj" "./uartstdio.obj" "./FatFs_Control/SPI_Control.obj" "./FatFs_Control/ff.obj" "./FatFs_Control/sdmm.obj" "../driverlib.lib" "../tm4c123gh6pm.cmd" -llibc.a 
