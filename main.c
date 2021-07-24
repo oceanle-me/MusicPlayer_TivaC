@@ -23,6 +23,13 @@
 
 #include "driverlib/pwm.h"
 
+
+//! - SoftSSIClk - PA2      PushPull
+//! - SoftSSIFss - PA3      Pull up
+//! - SoftSSIRx  - PA4      DO Pull-up  MISO
+//! - SoftSSITx  - PA5      DI PushPull MOSI
+//!  PB6 - PinOut PWM
+
 void    PWM0Gen0IntHandler(void);
 void    InitPWM(void);
 void    InitDebug(void);
@@ -81,10 +88,6 @@ int main() {
                 //                PlayMusic(&FileInfo.fname);
                 fr = f_findnext(&DirMusic, &FileInfo);               /* Search for next item */
 
-//                fr = f_findnext(&DirMusic, &FileInfo);
-//                fr = f_findnext(&DirMusic, &FileInfo);
-//                fr = f_findnext(&DirMusic, &FileInfo);
-//                fr = f_findnext(&DirMusic, &FileInfo);
                 PlayMusic();
             }
             f_closedir(&DirMusic);
