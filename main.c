@@ -63,11 +63,11 @@ uint32_t u32CountReadSoundArray;
 bool writeEnable = true;
 bool timeOutTimer0 = true;
 
-uint8_t readFileName[30][13]; //this array is used to store all the file names had been read by FatFs, we can use it to play a previous song.
+uint8_t allSongName[50][13]; //this array is used to store all the file names had been read by FatFs, we can use it to play a previous song.
                             // each song name will be stored into 13 bytes.. of this array
-//uint8_t * p_readFileName = readFileName;
+//uint8_t * p_allSongName = allSongName;
 uint8_t  totalSongs = 0 ; // ordinal number of song is playing (stt)
-uint8_t  ordinalSong;
+uint8_t  numOrderOfSong;
 
 int main() {
     SysCtlClockSet(SYSCTL_SYSDIV_3 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN | SYSCTL_XTAL_16MHZ);
@@ -89,21 +89,19 @@ int main() {
         fr = f_findfirst(&DirMusic,&FileInfo, "0:","?*.WAV");
         if(fr==FR_OK)
         {
-            ordinalSong =1;  // we have at least 1 .wav file(s) in this SD card
+            numOrderOfSong =1;  // we have at least 1 .wav file(s) in this SD card
             DBG("Connection succeed! Open 0: directory  \n");
-            //This below while loop is used to save all .wav file names into   readFileName[500], and count the number of songs.
+            //This below while loop is used to save all .wav file names into   allSongName[500], and count the number of songs.
             while (fr == FR_OK && FileInfo.fname[0]) {         /* Repeat while an item is found */
 
-//                totalSongs++;  //increase number of songs (stt)
-//                DBG("Song %d: %s\n",totalSongs, FileInfo.fname);                /* Print the object name */
 
                 uint8_t ovcmh;
                 for(ovcmh=0; ovcmh<13;ovcmh++ ){  //save file name to have the ability to play previous song
-                    readFileName[totalSongs][ovcmh] = FileInfo.fname[ovcmh];
+                    allSongName[totalSongs][ovcmh] = FileInfo.fname[ovcmh];
                 }
 
                 totalSongs++;  //increase number of songs (stt)
-                DBG("Song %d: %s\n",totalSongs, &readFileName[totalSongs-1][0]);                /* Print the object name */
+                DBG("Song %d: %s\n",totalSongs, &allSongName[totalSongs-1][0]);                /* Print the object name */
 
                 fr = f_findnext(&DirMusic, &FileInfo);               /* Search for next item */
 
@@ -111,9 +109,9 @@ int main() {
                 //have to add a condition if having many files then inform user
             }
 
-            while( (0 < ordinalSong) && (ordinalSong <= totalSongs) ){
-                PlayMusic( &readFileName[ordinalSong-1][0]  ,  ordinalSong);
-                ordinalSong++;
+            while( (0 < numOrderOfSong) && (numOrderOfSong <= totalSongs) ){
+                PlayMusic( &allSongName[numOrderOfSong-1][0]  ,  numOrderOfSong);
+                numOrderOfSong++;
             }
 
 
@@ -273,7 +271,6 @@ void    PlayMusic(uint8_t * p_songName, uint8_t num){
 //GPIO initialization and interrupt enabling
 void InitGPIO(void){
     SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
-    TimerConfigure(TIMER0_BASE, TIMER_CFG_ONE_SHOT);
 
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3);
@@ -334,7 +331,7 @@ void GPIOIntHandler(void){
         else if (timeOutTimer0== false){ //if sw2 is pressed twice around 0.5s then play previous song
             audioState = CHANGE_AUDIO;
             PWMGenEnable(PWM0_BASE, PWM_GEN_0);
-            ordinalSong -= 2;
+            numOrderOfSong -= 2;
         }
     }
 
