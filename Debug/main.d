@@ -29,10 +29,8 @@ main.obj: ../debug.h
 main.obj: C:/ti/TivaWare_C_Series-2.2.0.295/driverlib/udma.h
 main.obj: C:/ti/TivaWare_C_Series-2.2.0.295/driverlib/timer.h
 main.obj: C:/ti/TivaWare_C_Series-2.2.0.295/driverlib/ssi.h
-main.obj: C:/Users/Dell/workspace_v10/MP3Player/FatFs_Control/ff.h
-main.obj: C:/Users/Dell/workspace_v10/MP3Player/FatFs_Control/ffconf.h
-main.obj: ../MyWaveFile.h
-main.obj: C:/Users/Dell/workspace_v10/MP3Player/FatFs_Control/diskio.h
+main.obj: C:/Users/Dell/workspace_v10/MusicPlayer/FatFs_Control/ff.h
+main.obj: C:/Users/Dell/workspace_v10/MusicPlayer/FatFs_Control/ffconf.h
 main.obj: C:/ti/TivaWare_C_Series-2.2.0.295/driverlib/pwm.h
 
 ../main.c: 
@@ -64,8 +62,6 @@ C:/ti/TivaWare_C_Series-2.2.0.295/inc/tm4c123gh6pm.h:
 C:/ti/TivaWare_C_Series-2.2.0.295/driverlib/udma.h: 
 C:/ti/TivaWare_C_Series-2.2.0.295/driverlib/timer.h: 
 C:/ti/TivaWare_C_Series-2.2.0.295/driverlib/ssi.h: 
-C:/Users/Dell/workspace_v10/MP3Player/FatFs_Control/ff.h: 
-C:/Users/Dell/workspace_v10/MP3Player/FatFs_Control/ffconf.h: 
-../MyWaveFile.h: 
-C:/Users/Dell/workspace_v10/MP3Player/FatFs_Control/diskio.h: 
+C:/Users/Dell/workspace_v10/MusicPlayer/FatFs_Control/ff.h: 
+C:/Users/Dell/workspace_v10/MusicPlayer/FatFs_Control/ffconf.h: 
 C:/ti/TivaWare_C_Series-2.2.0.295/driverlib/pwm.h: 

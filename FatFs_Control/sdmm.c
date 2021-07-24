@@ -52,8 +52,8 @@
 #include "SPI_Control.h"
 
 
-#define CS_H()      GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_6,GPIO_PIN_6);   /* Set MMC CS "high" */
-#define CS_L()      GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_6,0);    /* Set MMC CS "low" */
+#define CS_H()      GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_3,GPIO_PIN_3);   /* Set MMC CS "high" */
+#define CS_L()      GPIOPinWrite(GPIO_PORTA_BASE, GPIO_PIN_3,0);    /* Set MMC CS "low" */
 
 
 static

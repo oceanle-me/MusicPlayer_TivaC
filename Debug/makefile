@@ -10,7 +10,6 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
-"./MyWaveFile.obj" \
 "./main.obj" \
 "./tm4c123gh6pm_startup_ccs.obj" \
 "./uartstdio.obj" \
@@ -129,42 +128,42 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXE_OUTPUTS += \
-MP3Player.out \
+MusicPlayer.out \
 
 EXE_OUTPUTS__QUOTED += \
-"MP3Player.out" \
+"MusicPlayer.out" \
 
 BIN_OUTPUTS += \
-MP3Player.hex \
+MusicPlayer.hex \
 
 BIN_OUTPUTS__QUOTED += \
-"MP3Player.hex" \
+"MusicPlayer.hex" \
 
 
 # All Target
 all: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
-	@$(MAKE) --no-print-directory -Onone "MP3Player.out"
+	@$(MAKE) --no-print-directory -Onone "MusicPlayer.out"
 
 # Tool invocations
-MP3Player.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
+MusicPlayer.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: Arm Linker'
-	"C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --define=ccs="ccs" --define=PART_TM4C123GH6PM -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"MP3Player.map" --heap_size=0 --stack_size=512 -i"C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/lib" -i"C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="MP3Player_linkInfo.xml" --rom_model -o "MP3Player.out" $(ORDERED_OBJS)
+	"C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --define=ccs="ccs" --define=PART_TM4C123GH6PM -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"MusicPlayer.map" --heap_size=0 --stack_size=512 -i"C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/lib" -i"C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="MusicPlayer_linkInfo.xml" --rom_model -o "MusicPlayer.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
-MP3Player.hex: $(EXE_OUTPUTS)
+MusicPlayer.hex: $(EXE_OUTPUTS)
 	@echo 'Building files: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo 'Invoking: Arm Hex Utility'
-	"C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/bin/armhex" --diag_wrap=off -o "MP3Player.hex" $(EXE_OUTPUTS__QUOTED)
+	"C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/bin/armhex" --diag_wrap=off -o "MusicPlayer.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo ' '
 
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "MyWaveFile.obj" "main.obj" "tm4c123gh6pm_startup_ccs.obj" "uartstdio.obj" "FatFs_Control\SPI_Control.obj" "FatFs_Control\ff.obj" "FatFs_Control\sdmm.obj" 
-	-$(RM) "MyWaveFile.d" "main.d" "tm4c123gh6pm_startup_ccs.d" "uartstdio.d" "FatFs_Control\SPI_Control.d" "FatFs_Control\ff.d" "FatFs_Control\sdmm.d" 
+	-$(RM) "main.obj" "tm4c123gh6pm_startup_ccs.obj" "uartstdio.obj" "FatFs_Control\SPI_Control.obj" "FatFs_Control\ff.obj" "FatFs_Control\sdmm.obj" 
+	-$(RM) "main.d" "tm4c123gh6pm_startup_ccs.d" "uartstdio.d" "FatFs_Control\SPI_Control.d" "FatFs_Control\ff.d" "FatFs_Control\sdmm.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

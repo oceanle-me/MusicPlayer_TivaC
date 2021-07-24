@@ -20,7 +20,7 @@
 #include "driverlib/timer.h"
 #include "driverlib/ssi.h"
 #include "ff.h"
-#include "MyWaveFile.h"
+
 #include "driverlib/pwm.h"
 
 void    PWM0Gen0IntHandler(void);
@@ -296,6 +296,7 @@ void GPIOIntHandler(void){
     }
     else if (intGPIOStatus == GPIO_INT_PIN_0 ){//SW2
         audioState = NEXT_AUDIO;
+        PWMGenEnable(PWM0_BASE, PWM_GEN_0);
         GPIO_PORTF_DATA_R ^= 0b10;
     }
 
