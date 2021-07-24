@@ -25,7 +25,7 @@ FatFs_Control/SPI_Control.obj: C:/ti/TivaWare_C_Series-2.2.0.295/driverlib/uart.
 FatFs_Control/SPI_Control.obj: C:/ti/TivaWare_C_Series-2.2.0.295/utils/uartstdio.h
 FatFs_Control/SPI_Control.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h
 FatFs_Control/SPI_Control.obj: C:/ti/TivaWare_C_Series-2.2.0.295/inc/tm4c123gh6pm.h
-FatFs_Control/SPI_Control.obj: C:/Users/Dell/workspace_v10/MusicPlayer/debug.h
+FatFs_Control/SPI_Control.obj: C:/Users/Dell/workspace_v10/MusicPlayer_PlayPreviousSong/debug.h
 FatFs_Control/SPI_Control.obj: C:/ti/TivaWare_C_Series-2.2.0.295/driverlib/ssi.h
 FatFs_Control/SPI_Control.obj: ../FatFs_Control/SPI_Control.h
 
@@ -54,6 +54,6 @@ C:/ti/TivaWare_C_Series-2.2.0.295/driverlib/uart.h:
 C:/ti/TivaWare_C_Series-2.2.0.295/utils/uartstdio.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h: 
 C:/ti/TivaWare_C_Series-2.2.0.295/inc/tm4c123gh6pm.h: 
-C:/Users/Dell/workspace_v10/MusicPlayer/debug.h: 
+C:/Users/Dell/workspace_v10/MusicPlayer_PlayPreviousSong/debug.h: 
 C:/ti/TivaWare_C_Series-2.2.0.295/driverlib/ssi.h: 
 ../FatFs_Control/SPI_Control.h: 

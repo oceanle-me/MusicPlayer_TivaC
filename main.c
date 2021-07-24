@@ -33,14 +33,14 @@
 void    PWM0Gen0IntHandler(void);
 void    InitPWM(void);
 void    InitDebug(void);
-void    PlayMusic(void);
+void    PlayMusic(uint8_t * p_songName, uint8_t num);
 
 
 void    GPIOIntHandler(void);
 void    InitGPIO(void);
 
-
-
+void Timer0A_Int(void);
+void Init_Timer0(void);
 
 FATFS FatFs;        /* FatFs work area needed for each volume */
 FIL Fil;            /* File object needed for each open file */
@@ -61,6 +61,13 @@ uint32_t rx_32;
 uint32_t u32CountWriteSoundArray;
 uint32_t u32CountReadSoundArray;
 bool writeEnable = true;
+bool timeOutTimer0 = true;
+
+uint8_t readFileName[30][13]; //this array is used to store all the file names had been read by FatFs, we can use it to play a previous song.
+                            // each song name will be stored into 13 bytes.. of this array
+//uint8_t * p_readFileName = readFileName;
+uint8_t  totalSongs = 0 ; // ordinal number of song is playing (stt)
+uint8_t  ordinalSong;
 
 int main() {
     SysCtlClockSet(SYSCTL_SYSDIV_3 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN | SYSCTL_XTAL_16MHZ);
@@ -82,14 +89,34 @@ int main() {
         fr = f_findfirst(&DirMusic,&FileInfo, "0:","?*.WAV");
         if(fr==FR_OK)
         {
+            ordinalSong =1;  // we have at least 1 .wav file(s) in this SD card
             DBG("Connection succeed! Open 0: directory  \n");
+            //This below while loop is used to save all .wav file names into   readFileName[500], and count the number of songs.
             while (fr == FR_OK && FileInfo.fname[0]) {         /* Repeat while an item is found */
-//                DBG("%s\n", FileInfo.fname);                /* Print the object name */
-                //                PlayMusic(&FileInfo.fname);
+
+//                totalSongs++;  //increase number of songs (stt)
+//                DBG("Song %d: %s\n",totalSongs, FileInfo.fname);                /* Print the object name */
+
+                uint8_t ovcmh;
+                for(ovcmh=0; ovcmh<13;ovcmh++ ){  //save file name to have the ability to play previous song
+                    readFileName[totalSongs][ovcmh] = FileInfo.fname[ovcmh];
+                }
+
+                totalSongs++;  //increase number of songs (stt)
+                DBG("Song %d: %s\n",totalSongs, &readFileName[totalSongs-1][0]);                /* Print the object name */
+
                 fr = f_findnext(&DirMusic, &FileInfo);               /* Search for next item */
 
-                PlayMusic();
+
+                //have to add a condition if having many files then inform user
             }
+
+            while( (0 < ordinalSong) && (ordinalSong <= totalSongs) ){
+                PlayMusic( &readFileName[ordinalSong-1][0]  ,  ordinalSong);
+                ordinalSong++;
+            }
+
+
             f_closedir(&DirMusic);
             DBG("Close 0: directory  \n");
             for (;;) ;
@@ -221,24 +248,22 @@ void 	InitDebug(void){
     UARTStdioConfig(0, 115200, SysCtlClockGet());
     DBG("Debug using UARTprintf\n");
 }
-void    PlayMusic(void){
+void    PlayMusic(uint8_t * p_songName, uint8_t num){
 
-    if (f_open(&Fil, FileInfo.fname, FA_READ) == FR_OK) {
-        DBG("Open File %s\n",FileInfo.fname);
-
+    if (f_open(&Fil, p_songName, FA_READ) == FR_OK) {
+        DBG("Open File Num.%d %s\n",num, p_songName);
         audioState = ON_AUDIO;
         PWMGenEnable(PWM0_BASE, PWM_GEN_0);
 
         f_forward(&Fil, out_stream, f_size(&Fil) ,(UINT*) &rx_32);
 
         f_close(&Fil);                         /* Close the file */
-        DBG("Close File %s\n",FileInfo.fname);
 
         PWMGenDisable(PWM0_BASE, PWM_GEN_0);
         audioState = OFF_AUDIO;
     }
     else {
-        DBG("Could not open file %s\n",FileInfo.fname);
+        DBG("Could not open file %s\n", p_songName);
     }
 }
 
@@ -282,7 +307,7 @@ void GPIOIntHandler(void){
     uint32_t intGPIOStatus;
     IntMasterDisable();
 
-    SysCtlDelay((SysCtlClockGet()/3/1000)*40); //avoid vibration button within 40ms
+    SysCtlDelay((SysCtlClockGet()/3/1000)*100); //avoid vibration button within 100ms
     intGPIOStatus = GPIOIntStatus(GPIO_PORTF_BASE, true);
     GPIOIntClear(GPIO_PORTF_BASE, intGPIOStatus);
 
@@ -298,17 +323,44 @@ void GPIOIntHandler(void){
         GPIO_PORTF_DATA_R ^= 0b100;
     }
     else if (intGPIOStatus == GPIO_INT_PIN_0 ){//SW2
-        audioState = NEXT_AUDIO;
-        PWMGenEnable(PWM0_BASE, PWM_GEN_0);
         GPIO_PORTF_DATA_R ^= 0b10;
+        DBG("%d \n",timeOutTimer0);
+        if(timeOutTimer0 == true){
+
+            audioState = CHANGE_AUDIO;
+            PWMGenDisable(PWM0_BASE, PWM_GEN_0);
+            Init_Timer0();
+        }
+        else if (timeOutTimer0== false){ //if sw2 is pressed twice around 0.5s then play previous song
+            audioState = CHANGE_AUDIO;
+            PWMGenEnable(PWM0_BASE, PWM_GEN_0);
+            ordinalSong -= 2;
+        }
     }
 
     while(!(GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_4|GPIO_PIN_0))) ; //wait here until the button is released. press=0
-    SysCtlDelay((SysCtlClockGet()/3/1000)*40); //avoid vibration button within 40ms
+    SysCtlDelay((SysCtlClockGet()/3/1000)*100); //avoid vibration button within 100ms
     GPIOIntClear(GPIO_PORTF_BASE, intGPIOStatus);
-
     IntMasterEnable();
 }
+
+void Init_Timer0(void){
+        timeOutTimer0 = false;
+        SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
+        TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
+        TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet()-1);  // set value overflow 1s
+        TimerIntRegister(TIMER0_BASE, TIMER_A, Timer0A_Int);
+        IntEnable(INT_TIMER0A);
+        TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
+        IntMasterEnable();
+        TimerEnable(TIMER0_BASE, TIMER_A);
+}
+    void Timer0A_Int(void)
+    {  TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);    // Clear the timer interrupt
+        timeOutTimer0=true;
+        PWMGenEnable(PWM0_BASE, PWM_GEN_0);
+    }
+
 
 
 

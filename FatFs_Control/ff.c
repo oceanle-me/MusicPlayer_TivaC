@@ -5610,7 +5610,7 @@ FRESULT f_forward (
 
 /*******************************************************************************************************************************************/
 		//these below lines are added by OceanLe, return immediately break out from this function ~~ to play the next song.
-	    if( audioState == NEXT_AUDIO){
+	    if( audioState == CHANGE_AUDIO){
 	        audioState = ON_AUDIO;
 	        return FR_OK; //this value is set by OceanLe, it indicates to play next song
 	    }

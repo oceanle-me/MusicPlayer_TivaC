@@ -128,34 +128,34 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXE_OUTPUTS += \
-MusicPlayer.out \
+MusicPlayer_PlayPreviousSong.out \
 
 EXE_OUTPUTS__QUOTED += \
-"MusicPlayer.out" \
+"MusicPlayer_PlayPreviousSong.out" \
 
 BIN_OUTPUTS += \
-MusicPlayer.hex \
+MusicPlayer_PlayPreviousSong.hex \
 
 BIN_OUTPUTS__QUOTED += \
-"MusicPlayer.hex" \
+"MusicPlayer_PlayPreviousSong.hex" \
 
 
 # All Target
 all: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
-	@$(MAKE) --no-print-directory -Onone "MusicPlayer.out"
+	@$(MAKE) --no-print-directory -Onone "MusicPlayer_PlayPreviousSong.out"
 
 # Tool invocations
-MusicPlayer.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
+MusicPlayer_PlayPreviousSong.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: Arm Linker'
-	"C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --define=ccs="ccs" --define=PART_TM4C123GH6PM -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"MusicPlayer.map" --heap_size=0 --stack_size=512 -i"C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/lib" -i"C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="MusicPlayer_linkInfo.xml" --rom_model -o "MusicPlayer.out" $(ORDERED_OBJS)
+	"C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --define=ccs="ccs" --define=PART_TM4C123GH6PM -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"MusicPlayer_PlayPreviousSong.map" --heap_size=0 --stack_size=512 -i"C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/lib" -i"C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="MusicPlayer_PlayPreviousSong_linkInfo.xml" --rom_model -o "MusicPlayer_PlayPreviousSong.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
-MusicPlayer.hex: $(EXE_OUTPUTS)
+MusicPlayer_PlayPreviousSong.hex: $(EXE_OUTPUTS)
 	@echo 'Building files: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo 'Invoking: Arm Hex Utility'
-	"C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/bin/armhex" --diag_wrap=off -o "MusicPlayer.hex" $(EXE_OUTPUTS__QUOTED)
+	"C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/bin/armhex" --diag_wrap=off -o "MusicPlayer_PlayPreviousSong.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo ' '
 

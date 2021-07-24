@@ -31,7 +31,7 @@ extern "C" {
 
 
 //-------------------added by OceanLe, to manipulate audio file---------------/
-typedef enum {ON_AUDIO,OFF_AUDIO,NEXT_AUDIO} audioState_e;
+typedef enum {ON_AUDIO,OFF_AUDIO,CHANGE_AUDIO} audioState_e;
 extern audioState_e audioState;
 //-------------------added by OceanLe, to manipulate audio file---------------/
 
