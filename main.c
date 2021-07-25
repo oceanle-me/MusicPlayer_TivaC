@@ -108,13 +108,16 @@ int main() {
 
                 //have to add a condition if having many files then inform user
             }
-
+/******************************************************************************************/
+            /*Endless loop of playing all the songs*/
+      while (1){
             while( (0 < numOrderOfSong) && (numOrderOfSong <= totalSongs) ){
                 PlayMusic( &allSongName[numOrderOfSong-1][0]  ,  numOrderOfSong);
                 numOrderOfSong++;
             }
-
-
+            numOrderOfSong=1;
+      }
+ /*********************************************************************************************/
             f_closedir(&DirMusic);
             DBG("Close 0: directory  \n");
             for (;;) ;
