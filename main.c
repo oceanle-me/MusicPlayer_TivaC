@@ -126,7 +126,12 @@ int main() {
     }
 
         DBG("Connection failed! Please Check your hardware and reset it!\n");
-    for (;;) ;
+
+    for (;;) {
+             GPIO_PORTF_DATA_R ^= 0b10;
+             SysCtlDelay(SysCtlClockGet()/3/5);
+
+    }
 }
 
 
