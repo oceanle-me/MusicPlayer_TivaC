@@ -23,10 +23,7 @@
 #include "ff.h"			/* Declarations of FatFs API */
 #include "diskio.h"		/* Declarations of device I/O functions */
 
-//-------------------added by OceanLe, to manipulate audio file---------------/
 
-audioState_e audioState;
-//-------------------added by OceanLe, to manipulate audio file---------------/
 
 /*--------------------------------------------------------------------------
 
@@ -5607,20 +5604,6 @@ FRESULT f_forward (
 	if (btf > remain) btf = (UINT)remain;			/* Truncate btf by remaining bytes */
 
 	for ( ; btf > 0 && (*func)(0, 0); fp->fptr += rcnt, *bf += rcnt, btf -= rcnt) {	/* Repeat until all data transferred or stream goes busy */
-
-/*******************************************************************************************************************************************/
-		//these below lines are added by OceanLe, return immediately break out from this function ~~ to play the next song.
-	    if( audioState == CHANGE_AUDIO){
-	        audioState = ON_AUDIO;
-	        return FR_OK; //this value is set by OceanLe, it indicates to play next song
-	    }
-//	    these above lines are added by OceanLe,
-//	    If receive  NEXT_AUDIO signal then return FR_OK immediately to break out from this function ~~
-//	    to make FatFS believe that current file has been read completely
-/********************************************************************************************************************************************/
-
-
-
 	    csect = (UINT)(fp->fptr / SS(fs) & (fs->csize - 1));	/* Sector offset in the cluster */
 		if (fp->fptr % SS(fs) == 0) {				/* On the sector boundary? */
 			if (csect == 0) {						/* On the cluster boundary? */

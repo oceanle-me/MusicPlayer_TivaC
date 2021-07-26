@@ -30,12 +30,6 @@ extern "C" {
 
 
 
-//-------------------added by OceanLe, to manipulate audio file---------------/
-typedef enum {ON_AUDIO,OFF_AUDIO,CHANGE_AUDIO} audioState_e;
-extern audioState_e audioState;
-//-------------------added by OceanLe, to manipulate audio file---------------/
-
-
 
 
 #if FF_DEFINED != FFCONF_DEF

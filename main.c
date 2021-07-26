@@ -42,6 +42,9 @@ void    InitGPIO(void);
 void Timer0A_Int(void);
 void Init_Timer0(void);
 
+typedef enum {ON_AUDIO,OFF_AUDIO,CHANGE_AUDIO} audioState_e;
+audioState_e audioState;
+
 FATFS FatFs;        /* FatFs work area needed for each volume */
 FIL Fil;            /* File object needed for each open file */
 DIR DirMusic;
@@ -146,6 +149,11 @@ UINT out_stream (   /* Returns number of bytes sent or stream status */
         /* When once it returned ready to sense call, it must accept a byte at least */
         /* at subsequent transfer call, or f_forward will fail with FR_INT_ERR. */
         //        if (FIFO_READY) cnt = 1;
+
+        if( audioState == CHANGE_AUDIO){
+                  audioState = ON_AUDIO;
+                  return 0; //this value is set by OceanLe, it indicates to play next song
+        }
         cnt = 1;
     }
     else {              /* Transfer call */
