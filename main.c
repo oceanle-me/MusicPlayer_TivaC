@@ -312,9 +312,9 @@ void GPIOIntHandler(void){
     uint32_t intGPIOStatus;
     IntMasterDisable();
 
-    SysCtlDelay((SysCtlClockGet()/3/1000)*100); //avoid vibration button within 100ms
+//    SysCtlDelay((SysCtlClockGet()/3/1000)*40); //avoid vibration button within 40ms
     intGPIOStatus = GPIOIntStatus(GPIO_PORTF_BASE, true);
-    GPIOIntClear(GPIO_PORTF_BASE, intGPIOStatus);
+//    GPIOIntClear(GPIO_PORTF_BASE, intGPIOStatus);
 
     if (intGPIOStatus == GPIO_INT_PIN_4 ){//SW1
         if(audioState==ON_AUDIO)  {
