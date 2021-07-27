@@ -20,7 +20,6 @@
 #include "driverlib/timer.h"
 #include "driverlib/ssi.h"
 #include "ff.h"
-
 #include "driverlib/pwm.h"
 
 
@@ -149,11 +148,6 @@ UINT out_stream (   /* Returns number of bytes sent or stream status */
         /* When once it returned ready to sense call, it must accept a byte at least */
         /* at subsequent transfer call, or f_forward will fail with FR_INT_ERR. */
         //        if (FIFO_READY) cnt = 1;
-
-        if( audioState == CHANGE_AUDIO){
-                  audioState = ON_AUDIO;
-                  return 0; //this value is set by OceanLe, it indicates to play next song
-        }
         cnt = 1;
     }
     else {              /* Transfer call */
@@ -177,9 +171,13 @@ UINT out_stream (   /* Returns number of bytes sent or stream status */
             while(0);
 
         }
-        while (cnt < btf /*&& FIFO_READY*/);
+        while ((cnt < btf)  /*&& (audioState != CHANGE_AUDIO) *//*&& FIFO_READY*/);
     }
 
+    if( audioState == CHANGE_AUDIO){
+              audioState = ON_AUDIO;
+              return 0;
+    }
     return cnt;
 }
 
@@ -360,8 +358,8 @@ void GPIOIntHandler(void){
 void Init_Timer0(void){
         timeOutTimer0 = false;
         SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
-        TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);
-        TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet()-1);  // set value overflow 1s
+        TimerConfigure(TIMER0_BASE, TIMER_CFG_ONE_SHOT);
+        TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet()-3);  // set value overflow 1s
         TimerIntRegister(TIMER0_BASE, TIMER_A, Timer0A_Int);
         IntEnable(INT_TIMER0A);
         TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
